@@ -139,16 +139,21 @@ def home():
 def db_test():
 
     with engine.connect() as connection:
+
         result = connection.execute(
-            text("SELECT 1")
-        )
+            text("""
+                SELECT
+                    current_database(),
+                    current_user,
+                    (SELECT COUNT(*) FROM products)
+            """)
+        ).fetchone()
 
     return {
-        "database": "connected",
-        "result": result.scalar()
+        "database": result[0],
+        "user": result[1],
+        "product_count": result[2]
     }
-
-
 # =========================
 # USER REGISTRATION
 # =========================
@@ -757,6 +762,8 @@ def create_payment(
             )
         }
     }
+
+    
 # =========================
 # CREATE DELIVERY
 # =========================
