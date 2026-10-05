@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { API_URL } from "@/lib/api";
 
 type Product = {
   id: number;
@@ -129,7 +130,7 @@ export default function MyProductsPage() {
       return;
     }
 
-    fetch("http://127.0.0.1:8000/my-products", {
+    fetch(`${API_URL}/my-products`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -169,7 +170,7 @@ export default function MyProductsPage() {
 
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/products/${productId}`,
+        `${API_URL}/products/${productId}`,
         {
           method: "DELETE",
           headers: {

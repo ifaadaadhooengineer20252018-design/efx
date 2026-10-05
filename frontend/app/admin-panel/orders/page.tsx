@@ -9,6 +9,10 @@ type Order = {
   total_amount?: number;
 };
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://efx-backend.onrender.com";
+
 export default function AdminOrdersPage() {
   const router = useRouter();
   const [orders, setOrders] = useState<Order[]>([]);
@@ -24,7 +28,7 @@ export default function AdminOrdersPage() {
       }
 
       const meResponse = await fetch(
-        "http://127.0.0.1:8000/me",
+        `${API_URL}/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -46,7 +50,7 @@ export default function AdminOrdersPage() {
       }
 
       const response = await fetch(
-        "http://127.0.0.1:8000/orders",
+        `${API_URL}/orders`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

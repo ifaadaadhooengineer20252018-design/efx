@@ -12,6 +12,10 @@ type Revenue = {
   created_at: string;
 };
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://efx-backend.onrender.com";
+
 export default function RevenueManagement() {
   const router = useRouter();
 
@@ -31,7 +35,7 @@ export default function RevenueManagement() {
       try {
         // Check current user
         const meResponse = await fetch(
-          "http://127.0.0.1:8000/me",
+          `${API_URL}/me`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -57,7 +61,7 @@ export default function RevenueManagement() {
 
         // Get revenue records
         const revenueResponse = await fetch(
-          "http://127.0.0.1:8000/admin/revenues",
+          `${API_URL}/admin/revenues`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

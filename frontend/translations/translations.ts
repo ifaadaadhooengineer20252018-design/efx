@@ -4,7 +4,8 @@ export const translations = {
     products: "Products",
     login: "Login",
     title: "EFX Ethiopia Farm Exchange",
-    slogan: "Farmers and buyers connected through one trusted marketplace.",
+    slogan:
+      "Farmers and buyers connected through one trusted marketplace.",
     browseProducts: "Browse Products",
     featuredProducts: "Featured Products",
     freshTomato: "Fresh Tomato",

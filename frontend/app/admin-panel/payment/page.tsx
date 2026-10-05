@@ -3,6 +3,10 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://efx-backend.onrender.com";
+
 export default function AdminPaymentsPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
@@ -17,7 +21,7 @@ export default function AdminPaymentsPage() {
       }
 
       const response = await fetch(
-        "http://127.0.0.1:8000/me",
+        `${API_URL}/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

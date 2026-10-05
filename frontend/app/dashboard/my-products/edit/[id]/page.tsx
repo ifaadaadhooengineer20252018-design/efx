@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
+import { API_URL } from "@/lib/api";
 
 type Language = "English" | "Afaan Oromo" | "Amharic";
 
@@ -126,7 +127,7 @@ export default function EditProductPage() {
       return;
     }
 
-    fetch(`http://127.0.0.1:8000/products/${productId}`, {
+    fetch(`${API_URL}/products/${productId}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -173,7 +174,7 @@ export default function EditProductPage() {
       }
 
       const response = await fetch(
-        `http://127.0.0.1:8000/products/${productId}`,
+        `${API_URL}/products/${productId}`,
         {
           method: "PUT",
           headers: {

@@ -1,7 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { setLanguage, getLanguage, Language } from "../lib/translations";
+import {
+  setLanguage,
+  getLanguage,
+  Language,
+} from "../lib/translation";
 
 export default function LanguageSwitcher() {
   const [language, setLanguageState] = useState<Language>("en");

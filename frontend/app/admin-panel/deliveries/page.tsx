@@ -10,6 +10,10 @@ type Driver = {
   is_available: boolean;
 };
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://efx-backend.onrender.com";
+
 export default function AdminDeliveriesPage() {
   const router = useRouter();
   const [drivers, setDrivers] = useState<Driver[]>([]);
@@ -25,7 +29,7 @@ export default function AdminDeliveriesPage() {
       }
 
       const meResponse = await fetch(
-        "http://127.0.0.1:8000/me",
+        `${API_URL}/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -47,7 +51,7 @@ export default function AdminDeliveriesPage() {
       }
 
       const response = await fetch(
-        "http://127.0.0.1:8000/drivers/available",
+        `${API_URL}/drivers/available`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

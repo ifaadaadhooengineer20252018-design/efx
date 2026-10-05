@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { API_URL } from "@/lib/api";
 
 type Product = {
   id: number;
@@ -132,9 +133,7 @@ export default function ProductDetailsPage() {
   };
 
   useEffect(() => {
-    fetch(
-      `http://127.0.0.1:8000/products/${productId}`
-    )
+    fetch(`${API_URL}/products/${productId}`)
       .then(async (response) => {
         if (!response.ok) {
           throw new Error("Product not found.");

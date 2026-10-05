@@ -17,6 +17,10 @@ type AdminStats = {
   total_revenue: number;
 };
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://efx-backend.onrender.com";
+
 export default function AdminDashboard() {
   const router = useRouter();
 
@@ -36,7 +40,7 @@ export default function AdminDashboard() {
       try {
         // Check current user
         const meResponse = await fetch(
-          "http://127.0.0.1:8000/me",
+          `${API_URL}/me`,
           {
             headers: {
               Authorization: `Bearer ${token}`,
@@ -62,7 +66,7 @@ export default function AdminDashboard() {
 
         // Get admin statistics
         const statsResponse = await fetch(
-          "http://127.0.0.1:8000/admin/stats",
+          `${API_URL}/admin/stats`,
           {
             headers: {
               Authorization: `Bearer ${token}`,

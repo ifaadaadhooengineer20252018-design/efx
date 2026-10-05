@@ -13,6 +13,10 @@ type Product = {
   status: string;
 };
 
+const API_URL =
+  process.env.NEXT_PUBLIC_API_URL ||
+  "https://efx-backend.onrender.com";
+
 export default function AdminProductsPage() {
   const router = useRouter();
 
@@ -29,7 +33,7 @@ export default function AdminProductsPage() {
       }
 
       const meResponse = await fetch(
-        "http://127.0.0.1:8000/me",
+        `${API_URL}/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -51,7 +55,7 @@ export default function AdminProductsPage() {
       }
 
       const response = await fetch(
-        "http://127.0.0.1:8000/products",
+        `${API_URL}/products`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

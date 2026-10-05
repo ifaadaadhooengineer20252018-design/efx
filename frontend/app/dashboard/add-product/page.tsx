@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { API_URL } from "@/lib/api";
 
 type Language = "English" | "Afaan Oromo" | "Amharic";
 
@@ -146,7 +147,7 @@ export default function AddProductPage() {
 
       // Get the currently logged-in user
       const userResponse = await fetch(
-        "http://127.0.0.1:8000/me",
+        `${API_URL}/me`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -174,7 +175,7 @@ export default function AddProductPage() {
 
       // Create product
       const response = await fetch(
-        "http://127.0.0.1:8000/products",
+        `${API_URL}/products`,
         {
           method: "POST",
           headers: {

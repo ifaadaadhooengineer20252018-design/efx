@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { translations } from "../../translations/translations";
+import { API_URL } from "@/lib/api";
 
 export default function ProductsPage() {
   // Products are loaded from the EFX backend
@@ -34,7 +35,7 @@ export default function ProductsPage() {
   }, []);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/products")
+    fetch(`${API_URL}/products`)
       .then((response) => response.json())
       .then((data) => {
         setProducts(data);

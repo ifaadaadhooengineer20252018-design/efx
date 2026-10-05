@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { API_URL } from "@/lib/api";
 
 type Product = {
   id: number;
@@ -112,7 +113,7 @@ export default function BuyerPage() {
     // =========================
     // LOAD PRODUCTS
     // =========================
-    fetch("http://127.0.0.1:8000/products")
+    fetch(`${API_URL}/products`)
       .then((response) => {
         if (!response.ok) {
           throw new Error("Failed to load products");
@@ -152,7 +153,7 @@ export default function BuyerPage() {
     // =========================
     // LOAD ORDERS
     // =========================
-    fetch("http://127.0.0.1:8000/orders", {
+    fetch(`${API_URL}/orders`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -179,7 +180,7 @@ export default function BuyerPage() {
           orderList.map(async (order) => {
             try {
               const response = await fetch(
-                `http://127.0.0.1:8000/deliveries/order/${order.id}`
+                `${API_URL}/deliveries/order/${order.id}`
               );
 
               if (response.status === 404) {
