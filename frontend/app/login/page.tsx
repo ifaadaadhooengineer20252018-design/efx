@@ -190,7 +190,7 @@ export default function LoginPage() {
               ? "Herrega hin qabduu?"
               : "መለያ የለዎትም?"}{" "}
             <a
-              href="#"
+              href="/register"
               className="font-semibold text-green-700 hover:underline"
             >
               {language === "English"
