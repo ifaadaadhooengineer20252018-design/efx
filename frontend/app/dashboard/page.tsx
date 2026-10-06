@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { translations } from "../../translations/translations";
 
 export default function DashboardPage() {
@@ -54,6 +55,7 @@ export default function DashboardPage() {
         </p>
 
         <div className="mt-8 grid gap-6 md:grid-cols-3">
+          {/* My Products */}
           <div className="rounded-xl bg-white p-6 shadow-md">
             <h2 className="text-xl font-bold text-gray-800">
               {language === "English"
@@ -70,8 +72,33 @@ export default function DashboardPage() {
                 ? "Oomishaalee qonnaa kee asitti bulchi."
                 : "የእርሻ ምርቶችዎን እዚህ ያስተዳድሩ።"}
             </p>
+
+            <div className="mt-5 flex flex-col gap-3">
+              <Link
+                href="/dashboard/add-product"
+                className="rounded-lg bg-green-700 px-4 py-3 text-center font-semibold text-white hover:bg-green-800"
+              >
+                {language === "English"
+                  ? "+ Add Product"
+                  : language === "Afaan Oromo"
+                  ? "+ Oomisha Dabali"
+                  : "+ ምርት ጨምር"}
+              </Link>
+
+              <Link
+                href="/dashboard/my-products"
+                className="rounded-lg border border-green-700 px-4 py-3 text-center font-semibold text-green-700 hover:bg-green-50"
+              >
+                {language === "English"
+                  ? "View My Products"
+                  : language === "Afaan Oromo"
+                  ? "Oomishaalee Koo Ilaali"
+                  : "ምርቶቼን ይመልከቱ"}
+              </Link>
+            </div>
           </div>
 
+          {/* Orders */}
           <div className="rounded-xl bg-white p-6 shadow-md">
             <h2 className="text-xl font-bold text-gray-800">
               {language === "English"
@@ -90,6 +117,7 @@ export default function DashboardPage() {
             </p>
           </div>
 
+          {/* Profile */}
           <div className="rounded-xl bg-white p-6 shadow-md">
             <h2 className="text-xl font-bold text-gray-800">
               {language === "English"
