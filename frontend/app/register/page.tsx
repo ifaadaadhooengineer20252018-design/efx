@@ -19,12 +19,14 @@ export default function RegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const [emailExists, setEmailExists] = useState(false);
 
   const handleRegister = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     setError("");
     setSuccess("");
+    setEmailExists(false);
 
     if (!fullName || !phone || !email || !password || !confirmPassword) {
       setError("Please fill in all fields.");
@@ -60,6 +62,17 @@ export default function RegisterPage() {
       const data = await response.json();
 
       if (!response.ok) {
+        if (
+          response.status === 400 &&
+          data.detail === "Email already registered"
+        ) {
+          setError(
+            "This email is already registered. Please log in instead."
+          );
+          setEmailExists(true);
+          return;
+        }
+
         throw new Error(data.detail || "Registration failed.");
       }
 
@@ -102,6 +115,16 @@ export default function RegisterPage() {
           {error && (
             <div className="mb-5 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
               {error}
+
+              {emailExists && (
+                <button
+                  type="button"
+                  onClick={() => router.push("/login")}
+                  className="mt-3 block font-semibold text-green-700 hover:underline"
+                >
+                  Go to Login →
+                </button>
+              )}
             </div>
           )}
 
