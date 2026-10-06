@@ -1,10 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { translations } from "../../translations/translations";
 import { API_URL } from "@/lib/api";
 
 export default function LoginPage() {
+  const router = useRouter();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
@@ -73,7 +76,9 @@ export default function LoginPage() {
         return;
       }
 
-      localStorage.setItem("token", data.access_token);
+      const token = data.access_token;
+
+      localStorage.setItem("token", token);
 
       alert(
         language === "English"
@@ -83,7 +88,35 @@ export default function LoginPage() {
           : "መግባት ተሳክቷል!"
       );
 
-      console.log("Access token:", data.access_token);
+      // Get the logged-in user's role
+      const meResponse = await fetch(`${API_URL}/me`, {
+        method: "GET",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (!meResponse.ok) {
+        alert(
+          language === "English"
+            ? "Login succeeded, but user information could not be loaded."
+            : language === "Afaan Oromo"
+            ? "Seenuun milkaa'e, garuu odeeffannoon fayyadamaa hin argamne."
+            : "መግባት ተሳክቷል፣ ነገር ግን የተጠቃሚ መረጃ ሊጫን አልቻለም።"
+        );
+        return;
+      }
+
+      const user = await meResponse.json();
+
+      // Redirect based on user role
+      if (user.role === "admin") {
+        router.push("/admin-panel");
+      } else if (user.role === "buyer") {
+        router.push("/buyer-dashbord");
+      } else {
+        router.push("/dashboard");
+      }
     } catch (error) {
       console.error("Login error:", error);
 
