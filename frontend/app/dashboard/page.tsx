@@ -97,44 +97,49 @@ export default function DashboardPage() {
               </Link>
             </div>
           </div>
+{/* Orders */}
+<Link
+  href="/dashboard/orders"
+  className="block cursor-pointer rounded-xl bg-white p-6 shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+>
+  <h2 className="text-xl font-bold text-gray-800">
+    {language === "English"
+      ? "Orders"
+      : language === "Afaan Oromo"
+      ? "Ajajawwan"
+      : "ትዕዛዞች"}
+  </h2>
 
-          {/* Orders */}
-          <div className="rounded-xl bg-white p-6 shadow-md">
-            <h2 className="text-xl font-bold text-gray-800">
-              {language === "English"
-                ? "Orders"
-                : language === "Afaan Oromo"
-                ? "Ajajawwan"
-                : "ትዕዛዞች"}
-            </h2>
+  <p className="mt-2 text-gray-600">
+    {language === "English"
+      ? "View your orders here."
+      : language === "Afaan Oromo"
+      ? "Ajajawwan kee asitti ilaali."
+      : "ትዕዛዞችዎን እዚህ ይመልከቱ።"}
+  </p>
+</Link>
 
-            <p className="mt-2 text-gray-600">
-              {language === "English"
-                ? "View your orders here."
-                : language === "Afaan Oromo"
-                ? "Ajajawwan kee asitti ilaali."
-                : "ትዕዛዞችዎን እዚህ ይመልከቱ።"}
-            </p>
-          </div>
+{/* Profile */}
+<Link
+  href="/dashboard/profile"
+  className="block cursor-pointer rounded-xl bg-white p-6 shadow-md transition-all duration-200 hover:-translate-y-1 hover:shadow-lg"
+>
+  <h2 className="text-xl font-bold text-gray-800">
+    {language === "English"
+      ? "Profile"
+      : language === "Afaan Oromo"
+      ? "Profaayilii"
+      : "መገለጫ"}
+  </h2>
 
-          {/* Profile */}
-          <div className="rounded-xl bg-white p-6 shadow-md">
-            <h2 className="text-xl font-bold text-gray-800">
-              {language === "English"
-                ? "Profile"
-                : language === "Afaan Oromo"
-                ? "Profaayilii"
-                : "መገለጫ"}
-            </h2>
-
-            <p className="mt-2 text-gray-600">
-              {language === "English"
-                ? "Manage your profile information."
-                : language === "Afaan Oromo"
-                ? "Odeeffannoo profaayilii kee bulchi."
-                : "የመገለጫ መረጃዎን ያስተዳድሩ።"}
-            </p>
-          </div>
+  <p className="mt-2 text-gray-600">
+    {language === "English"
+      ? "Manage your profile information."
+      : language === "Afaan Oromo"
+      ? "Odeeffannoo profaayilii kee bulchi."
+      : "የመገለጫ መረጃዎን ያስተዳድሩ።"}
+  </p>
+</Link>
         </div>
       </div>
     </main>
