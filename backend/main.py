@@ -536,39 +536,84 @@ def create_order(
         "buyer_id": new_order.buyer_id
     }
 
-
 # =========================
 # GET MY ORDERS
 # =========================
 
 @app.get("/orders")
 def get_my_orders(
-    current_user: models.User = Depends(
-        require_role("buyer")
-    ),
+    current_user: models.User = Depends(get_current_user),
     db: Session = Depends(get_db)
 ):
 
-    orders = (
-        db.query(models.Order)
-        .filter(
-            models.Order.buyer_id == current_user.id
+    # =========================
+    # BUYER ORDERS
+    # =========================
+    if current_user.role == "buyer":
+
+        orders = (
+            db.query(models.Order)
+            .filter(
+                models.Order.buyer_id == current_user.id
+            )
+            .order_by(models.Order.id.desc())
+            .all()
         )
-        .order_by(models.Order.id.desc())
-        .all()
-    )
+
+    # =========================
+    # FARMER ORDERS
+    # =========================
+    elif current_user.role == "farmer":
+
+        orders = (
+            db.query(models.Order)
+            .join(
+                models.OrderItem,
+                models.OrderItem.order_id == models.Order.id
+            )
+            .join(
+                models.Product,
+                models.Product.id == models.OrderItem.product_id
+            )
+            .filter(
+                models.Product.farmer_id == current_user.id
+            )
+            .distinct()
+            .order_by(models.Order.id.desc())
+            .all()
+        )
+
+    else:
+        raise HTTPException(
+            status_code=403,
+            detail="You do not have permission to view orders"
+        )
 
     result = []
 
     for order in orders:
 
-        items = (
+        # =========================
+        # ORDER ITEMS
+        # =========================
+        items_query = (
             db.query(models.OrderItem)
+            .join(
+                models.Product,
+                models.Product.id == models.OrderItem.product_id
+            )
             .filter(
                 models.OrderItem.order_id == order.id
             )
-            .all()
         )
+
+        # Farmer only sees items belonging to that farmer.
+        if current_user.role == "farmer":
+            items_query = items_query.filter(
+                models.Product.farmer_id == current_user.id
+            )
+
+        items = items_query.all()
 
         result.append({
             "id": order.id,
@@ -593,8 +638,6 @@ def get_my_orders(
         })
 
     return result
-
-
 # =========================
 # CREATE PAYMENT
 # =========================
