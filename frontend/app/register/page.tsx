@@ -28,7 +28,13 @@ export default function RegisterPage() {
     setSuccess("");
     setEmailExists(false);
 
-    if (!fullName || !phone || !email || !password || !confirmPassword) {
+    if (
+      !fullName ||
+      !phone ||
+      !email ||
+      !password ||
+      !confirmPassword
+    ) {
       setError("Please fill in all fields.");
       return;
     }
@@ -73,10 +79,26 @@ export default function RegisterPage() {
           return;
         }
 
-        throw new Error(data.detail || "Registration failed.");
+        if (Array.isArray(data.detail)) {
+          const messages = data.detail
+            .map(
+              (item: { msg?: string }) =>
+                item.msg || "Validation error"
+            )
+            .join(", ");
+
+          setError(messages);
+          return;
+        }
+
+        throw new Error(
+          data.detail || "Registration failed."
+        );
       }
 
-      setSuccess("Registration successful! Redirecting to login...");
+      setSuccess(
+        "Registration successful! Redirecting to login..."
+      );
 
       setFullName("");
       setPhone("");
@@ -88,10 +110,14 @@ export default function RegisterPage() {
         router.push("/login");
       }, 1500);
     } catch (err) {
+      console.error("Registration error:", err);
+
       if (err instanceof Error) {
         setError(err.message);
       } else {
-        setError("Something went wrong. Please try again.");
+        setError(
+          "Something went wrong. Please try again."
+        );
       }
     } finally {
       setLoading(false);
@@ -110,11 +136,16 @@ export default function RegisterPage() {
             <p className="mt-2 text-gray-600">
               Join EFX Ethiopia Farm Exchange
             </p>
+
+            <p className="mt-2 text-sm text-gray-500">
+              One EFX account for buying, selling, orders,
+              and more.
+            </p>
           </div>
 
           {error && (
             <div className="mb-5 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700">
-              {error}
+              <p>{error}</p>
 
               {emailExists && (
                 <button
@@ -134,7 +165,10 @@ export default function RegisterPage() {
             </div>
           )}
 
-          <form onSubmit={handleRegister} className="space-y-5">
+          <form
+            onSubmit={handleRegister}
+            className="space-y-5"
+          >
             <div>
               <label
                 htmlFor="fullName"
@@ -147,9 +181,12 @@ export default function RegisterPage() {
                 id="fullName"
                 type="text"
                 value={fullName}
-                onChange={(e) => setFullName(e.target.value)}
+                onChange={(e) =>
+                  setFullName(e.target.value)
+                }
                 placeholder="Enter your full name"
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-600"
+                required
               />
             </div>
 
@@ -165,9 +202,12 @@ export default function RegisterPage() {
                 id="phone"
                 type="tel"
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onChange={(e) =>
+                  setPhone(e.target.value)
+                }
                 placeholder="09XXXXXXXX"
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-600"
+                required
               />
             </div>
 
@@ -183,9 +223,12 @@ export default function RegisterPage() {
                 id="email"
                 type="email"
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) =>
+                  setEmail(e.target.value)
+                }
                 placeholder="Enter your email"
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-600"
+                required
               />
             </div>
 
@@ -201,9 +244,13 @@ export default function RegisterPage() {
                 id="password"
                 type="password"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) =>
+                  setPassword(e.target.value)
+                }
                 placeholder="Create a password"
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-600"
+                required
+                minLength={6}
               />
             </div>
 
@@ -219,9 +266,13 @@ export default function RegisterPage() {
                 id="confirmPassword"
                 type="password"
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) =>
+                  setConfirmPassword(e.target.value)
+                }
                 placeholder="Confirm your password"
                 className="w-full rounded-lg border border-gray-300 px-4 py-3 outline-none focus:border-green-600"
+                required
+                minLength={6}
               />
             </div>
 
@@ -230,7 +281,9 @@ export default function RegisterPage() {
               disabled={loading}
               className="w-full rounded-lg bg-green-700 px-4 py-3 font-semibold text-white transition hover:bg-green-800 disabled:cursor-not-allowed disabled:bg-gray-400"
             >
-              {loading ? "Creating Account..." : "Register"}
+              {loading
+                ? "Creating Account..."
+                : "Register"}
             </button>
           </form>
 

@@ -20,6 +20,12 @@ export default function LoginPage() {
       setLanguage(savedLanguage);
     }
 
+    const savedEmail = localStorage.getItem("loginEmail");
+
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
+
     const handleLanguageChanged = () => {
       const newLanguage = localStorage.getItem("language");
 
@@ -78,17 +84,25 @@ export default function LoginPage() {
 
       const token = data.access_token;
 
+      if (!token) {
+        alert(
+          language === "English"
+            ? "Login failed: no access token was received."
+            : language === "Afaan Oromo"
+            ? "Seenuun hin milkoofne: access token hin argamne."
+            : "መግባት አልተሳካም፦ access token አልተገኘም።"
+        );
+
+        return;
+      }
+
+      // Save the authentication token.
       localStorage.setItem("token", token);
 
-      alert(
-        language === "English"
-          ? "Login successful!"
-          : language === "Afaan Oromo"
-          ? "Seenuun milkaa'e!"
-          : "መግባት ተሳክቷል!"
-      );
+      // Remember the email for the next login.
+      localStorage.setItem("loginEmail", email);
 
-      // Get the logged-in user's role
+      // Get the logged-in user's information.
       const meResponse = await fetch(`${API_URL}/me`, {
         method: "GET",
         headers: {
@@ -104,16 +118,16 @@ export default function LoginPage() {
             ? "Seenuun milkaa'e, garuu odeeffannoon fayyadamaa hin argamne."
             : "መግባት ተሳክቷል፣ ነገር ግን የተጠቃሚ መረጃ ሊጫን አልቻለም።"
         );
+
         return;
       }
 
       const user = await meResponse.json();
 
-      // Redirect based on user role
+      // EFX uses one unified dashboard for all normal users.
+      // Admin keeps a separate admin panel.
       if (user.role === "admin") {
         router.push("/admin-panel");
-      } else if (user.role === "buyer") {
-        router.push("/buyer-dashbord");
       } else {
         router.push("/dashboard");
       }
